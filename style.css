@@ -1,0 +1,304 @@
+/* General Layout */
+body {
+    background: #2b2b2b;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+}
+
+.container {
+    background: #333;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 450px; /* Slightly wider to accommodate buttons */
+    text-align: center;
+}
+
+/* Search Box & Input */
+.search-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+    box-sizing: border-box; /* Important for width calculation */
+    font-size: 16px;
+}
+
+/* Button Grouping Logic */
+.button-group {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+}
+
+button {
+    flex: 1; /* Makes buttons share space equally */
+    padding: 10px 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+/* Specific Button Colors */
+#searchBtn { background: #ffcb05; color: #2b2b2b; }
+#searchBtn:hover { background: #e6b800; transform: translateY(-2px); }
+
+#randomBtn { background: #4caf50; }
+#randomBtn:hover { background: #388e3c; transform: translateY(-2px); }
+
+#clearBtn { background: #757575; }
+#clearBtn:hover { background: #616161; transform: translateY(-2px); }
+
+/* Results Display Area */
+#pokeImg {
+    width: 220px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+}
+
+.type-badge {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    margin: 8px 0;
+    border-radius: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.multiplier {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+
+#weaknessResults {
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* Loading Spinner */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #444;
+    border-top: 5px solid #ef5350;
+    border-radius: 50%;
+    margin: 20px auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading p {
+    font-weight: bold;
+    color: #ffcb05;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#teamSection {
+    margin-top: 30px;
+    border-top: 2px solid #444;
+    padding-top: 20px;
+}
+
+#teamGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    min-height: 50px;
+}
+
+.team-member {
+    background: #444;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80px;
+    position: relative;
+}
+
+.team-member img {
+    width: 60px;
+}
+
+.team-member p {
+    font-size: 10px;
+    margin: 5px 0 0 0;
+}
+
+.team-member {
+    position: relative; /* Essential for the absolute X button */
+}
+
+.remove-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef5350;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 18px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.remove-btn:hover {
+    background: #b71c1c;
+    transform: scale(1.1);
+}
+
+/* Animation for when the Pokemon appears */
+#displayArea:not(.hidden) {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animation for when you click the image to hear the cry */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
+
+#pokeImg {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+#pokeImg:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Force the Release All button to stay Red */
+#clearTeamBtn {
+    background-color: #e53935 !important; /* Poke-Red */
+    color: white !important;
+    margin-top: 15px;
+    width: 30%;
+    flex: none; /* Prevents it from trying to 'share' a row if it's outside a group */
+}
+
+#clearTeamBtn:hover {
+    background-color: #b71c1c !important;
+    transform: scale(1.02);
+}
+
+.shiny-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px; width: 14px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #ffcb05; }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* 1. Animation for the Display Card appearing */
+#displayArea:not(.hidden) {
+    animation: slideUpFade 0.6s ease-out;
+}
+
+@keyframes slideUpFade {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* 2. Make the Weakness Badges appear one by one */
+#weaknessResults .type-badge {
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes popIn {
+    from { 
+        opacity: 0; 
+        transform: scale(0.5); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+}
+
+/* 3. Add a "Pulse" to the Coverage Warning when it appears */
+#coverageWarning:not(:empty) {
+    animation: pulseBorder 2s infinite;
+}
+
+@keyframes pulseBorder {
+    0% { box-shadow: 0 0 0 0 rgba(255, 171, 0, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 171, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 171, 0, 0); }
+}

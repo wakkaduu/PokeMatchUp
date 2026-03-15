@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokéMatchup Lab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PokéMatchup Lab</h1>
+        
+        <div class="search-box">
+            <input type="text" id="pokeInput" placeholder="Enter Pokémon...">
+            <div class="button-group">
+                <button id="searchBtn">Analyze</button>
+                <button id="randomBtn">Random</button>
+                <button id="clearBtn">Clear</button>
+            </div>
+        </div>
+
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Searching the Pokédex...</p>
+        </div>
+
+        <div id="displayArea" class="hidden">
+            <h2 id="pokeName"></h2>
+            <div id="typesBadge"></div>
+            
+            <div class="shiny-toggle-container">
+                <span>Normal</span>
+                <label class="switch">
+                    <input type="checkbox" id="shinyToggle">
+                    <span class="slider round"></span>
+                </label>
+                <span>Shiny ✨</span>
+            </div>
+
+            <img id="pokeImg" src="" alt="pokemon">
+            
+            <h3>Weakness Analysis</h3>
+            <div id="weaknessResults"></div>
+        </div>
+
+        <div id="teamSection">
+            <h3>My Saved Team</h3>
+            <div id="coverageWarning"></div>
+            <div id="teamGrid"></div>
+            <button id="clearTeamBtn">Release All</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
