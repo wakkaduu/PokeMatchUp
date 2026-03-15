@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png">
     <title>PokéMatchup Lab</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -25,22 +27,32 @@
         </div>
 
         <div id="displayArea" class="hidden">
-            <h2 id="pokeName"></h2>
-            <div id="typesBadge"></div>
-            
-            <div class="shiny-toggle-container">
-                <span>Normal</span>
-                <label class="switch">
-                    <input type="checkbox" id="shinyToggle">
-                    <span class="slider round"></span>
-                </label>
-                <span>Shiny ✨</span>
+            <div class="poke-header">
+                <h2 id="pokeName"></h2>
+                <button id="shareBtn" class="icon-btn" title="Share this Pokémon">🔗</button>
             </div>
 
-            <img id="pokeImg" src="" alt="pokemon">
+            <div id="typesBadge"></div>
             
-            <h3>Weakness Analysis</h3>
-            <div id="weaknessResults"></div>
+            <div class="controls-row">
+                <div class="shiny-toggle-container">
+                    <span>Normal</span>
+                    <label class="switch">
+                        <input type="checkbox" id="shinyToggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Shiny ✨</span>
+                </div>
+            </div>
+
+            <div class="img-container">
+                <img id="pokeImg" src="" alt="pokemon">
+            </div>
+            
+            <div class="analysis-section">
+                <h3>Weakness Analysis</h3>
+                <div id="weaknessResults"></div>
+            </div>
         </div>
 
         <div id="teamSection">
@@ -49,7 +61,10 @@
             <div id="teamGrid"></div>
             <button id="clearTeamBtn">Release All</button>
         </div>
-    </div>
+    </div> <footer class="fixed-footer">
+        <p>Created by <strong>[Your Name]</strong></p>
+        <p>CpE Student | Quezon City University</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>

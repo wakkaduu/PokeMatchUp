@@ -1,239 +1,160 @@
-/* General Layout */
+/* --- Global Variables --- */
+:root {
+    --type-glow: rgba(255, 255, 255, 0.1); /* Default Glow */
+    --bg-dark: #121212;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    background: #2b2b2b;
+    background: var(--bg-dark);
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 50px 20px;
-}
-
-.container {
-    background: #333;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    width: 100%;
-    max-width: 450px; /* Slightly wider to accommodate buttons */
-    text-align: center;
-}
-
-/* Search Box & Input */
-.search-box {
+    font-family: 'Segoe UI', Roboto, sans-serif;
     display: flex;
     flex-direction: column;
-    gap: 15px;
     align-items: center;
-    margin-bottom: 20px;
+    min-height: 100vh;
+    padding: 40px 20px;
 }
 
+/* --- The Main App Card --- */
+.container {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    z-index: 10;
+    
+    /* THE GLOW - This is what the JS talks to */
+    border: 2px solid var(--type-glow);
+    box-shadow: 0 0 35px var(--type-glow);
+    
+    transition: all 0.6s ease;
+}
+
+/* --- Search & UI Components --- */
+.search-box { margin-bottom: 20px; }
 input {
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.3);
+    color: white;
     width: 100%;
-    box-sizing: border-box; /* Important for width calculation */
     font-size: 16px;
+    margin-bottom: 12px;
 }
 
-/* Button Grouping Logic */
-.button-group {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    justify-content: center;
-}
-
+.button-group { display: flex; gap: 8px; }
 button {
-    flex: 1; /* Makes buttons share space equally */
-    padding: 10px 5px;
+    flex: 1;
+    padding: 12px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
-    color: white;
-    transition: all 0.2s ease;
+    transition: 0.3s;
 }
 
-/* Specific Button Colors */
-#searchBtn { background: #ffcb05; color: #2b2b2b; }
-#searchBtn:hover { background: #e6b800; transform: translateY(-2px); }
+#searchBtn { background: #ffcb05; color: #1a1a1a; }
+#randomBtn { background: #4caf50; color: white; }
+#clearBtn { background: #555; color: white; }
 
-#randomBtn { background: #4caf50; }
-#randomBtn:hover { background: #388e3c; transform: translateY(-2px); }
+/* --- Pokemon Display --- */
+.poke-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+}
 
-#clearBtn { background: #757575; }
-#clearBtn:hover { background: #616161; transform: translateY(-2px); }
+#pokeName {
+    font-size: 1.8rem;
+    background: linear-gradient(to right, #ffcb05, #ffab00);
+    
+    /* The standard version */
+    background-clip: text;
+    
+    /* The vendor-specific version (the one with the orange line) */
+    -webkit-background-clip: text;
+    
+    /* This makes the text itself transparent so the background shows through */
+    color: transparent; 
+    -webkit-text-fill-color: transparent;
+}
 
-/* Results Display Area */
+.img-container {
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+}
+
 #pokeImg {
-    width: 220px;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+    width: 200px;
+    cursor: pointer;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+    transition: transform 0.3s ease;
 }
 
+#pokeImg:hover { transform: scale(1.1); }
+
+/* --- Badges --- */
 .type-badge {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 8px 15px;
+    padding: 10px 18px;
     margin: 8px 0;
-    border-radius: 20px;
+    border-radius: 12px;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
-.multiplier {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 0.9em;
-}
-
-#weaknessResults {
+.analysis-section {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 15px;
     margin-top: 20px;
     text-align: left;
 }
 
-/* Loading Spinner */
+/* --- Loader --- */
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #444;
-    border-top: 5px solid #ef5350;
+    width: 40px; height: 40px;
+    border: 4px solid rgba(255,255,255,0.1);
+    border-top: 4px solid #ffcb05;
     border-radius: 50%;
     margin: 20px auto;
     animation: spin 1s linear infinite;
 }
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.hidden { display: none !important; }
+
+/* --- Fixed Footer --- */
+.fixed-footer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(30, 30, 30, 0.7);
+    padding: 12px 18px;
+    border-radius: 14px;
+    border-right: 4px solid #ffcb05;
+    font-size: 0.7rem;
+    backdrop-filter: blur(10px);
 }
 
-#loading p {
-    font-weight: bold;
-    color: #ffcb05;
-}
-
-.hidden {
-    display: none !important;
-}
-
-#teamSection {
-    margin-top: 30px;
-    border-top: 2px solid #444;
-    padding-top: 20px;
-}
-
-#teamGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    min-height: 50px;
-}
-
-.team-member {
-    background: #444;
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
-    width: 80px;
-    position: relative;
-}
-
-.team-member img {
-    width: 60px;
-}
-
-.team-member p {
-    font-size: 10px;
-    margin: 5px 0 0 0;
-}
-
-.team-member {
-    position: relative; /* Essential for the absolute X button */
-}
-
-.remove-btn {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #ef5350;
-    color: white;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    font-size: 14px;
-    line-height: 18px;
-    cursor: pointer;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-.remove-btn:hover {
-    background: #b71c1c;
-    transform: scale(1.1);
-}
-
-/* Animation for when the Pokemon appears */
-#displayArea:not(.hidden) {
-    animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Animation for when you click the image to hear the cry */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px) scale(1.05); }
-}
-
-#pokeImg {
-    transition: transform 0.3s ease;
-    cursor: pointer;
-}
-
-#pokeImg:hover {
-    transform: scale(1.1); /* Slight zoom on hover */
-}
-
-/* Force the Release All button to stay Red */
-#clearTeamBtn {
-    background-color: #e53935 !important; /* Poke-Red */
-    color: white !important;
-    margin-top: 15px;
-    width: 30%;
-    flex: none; /* Prevents it from trying to 'share' a row if it's outside a group */
-}
-
-#clearTeamBtn:hover {
-    background-color: #b71c1c !important;
-    transform: scale(1.02);
-}
-
-.shiny-toggle-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 15px 0;
-    font-size: 0.9em;
-    font-weight: bold;
-}
-
-/* The switch - the box around the slider */
+/* --- 1. The Shiny Toggle (Slider) --- */
 .switch {
     position: relative;
     display: inline-block;
-    width: 40px;
-    height: 20px;
+    width: 44px;
+    height: 22px;
 }
 
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -242,63 +163,155 @@ button {
     position: absolute;
     cursor: pointer;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ccc;
+    background-color: rgba(255,255,255,0.1);
     transition: .4s;
-    border-radius: 20px;
+    border-radius: 34px;
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .slider:before {
     position: absolute;
     content: "";
     height: 14px; width: 14px;
-    left: 3px; bottom: 3px;
+    left: 4px; bottom: 3px;
     background-color: white;
     transition: .4s;
     border-radius: 50%;
 }
 
 input:checked + .slider { background-color: #ffcb05; }
-input:checked + .slider:before { transform: translateX(20px); }
+input:checked + .slider:before { transform: translateX(22px); }
 
-/* 1. Animation for the Display Card appearing */
-#displayArea:not(.hidden) {
-    animation: slideUpFade 0.6s ease-out;
+/* --- 2. The Release All Button --- */
+#clearTeamBtn {
+    background: linear-gradient(135deg, #ef5350, #b71c1c);
+    color: white;
+    margin-top: 20px;
+    padding: 10px 20px;
+    width: auto;
+    font-size: 0.8rem;
+    box-shadow: 0 4px 15px rgba(239, 83, 80, 0.3);
 }
 
-@keyframes slideUpFade {
-    from { 
-        opacity: 0; 
-        transform: translateY(30px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
+#clearTeamBtn:hover {
+    background: #d32f2f;
+    box-shadow: 0 6px 20px rgba(239, 83, 80, 0.5);
 }
 
-/* 2. Make the Weakness Badges appear one by one */
-#weaknessResults .type-badge {
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+.icon-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    padding: 4px;      /* Reduced padding */
+    border-radius: 50%;
+    width: 28px;       /* Shrunk from 38px */
+    height: 28px;      /* Shrunk from 38px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem; /* Smaller icon size */
+    transition: all 0.3s ease;
 }
 
-@keyframes popIn {
-    from { 
-        opacity: 0; 
-        transform: scale(0.5); 
-    }
-    to { 
-        opacity: 1; 
-        transform: scale(1); 
-    }
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1); /* Removed the rotate to keep it clean */
+}
+/* --- 1. Restore the Shiny Toggle Slider --- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+    margin: 0 10px;
 }
 
-/* 3. Add a "Pulse" to the Coverage Warning when it appears */
-#coverageWarning:not(:empty) {
-    animation: pulseBorder 2s infinite;
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: .4s;
+    border-radius: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
 }
 
-@keyframes pulseBorder {
-    0% { box-shadow: 0 0 0 0 rgba(255, 171, 0, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(255, 171, 0, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 171, 0, 0); }
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+input:checked + .slider {
+    background-color: #ffcb05; /* Pokemon Yellow */
+    border-color: #ffcb05;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+/* --- 2. Polish the Share Button --- */
+.icon-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(15deg) scale(1.1);
+}
+
+/* --- 3. The "Release All" Button --- */
+#clearTeamBtn {
+    background: linear-gradient(135deg, #ef5350, #d32f2f);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+    margin-top: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#clearTeamBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(211, 47, 47, 0.6);
+}
+
+/* --- 4. Spacing for the Toggle Row --- */
+.shiny-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+    font-size: 0.85rem;
+    color: #bbb;
 }
