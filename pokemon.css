@@ -1,0 +1,664 @@
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    min-height: 100vh; /* Changed from height to min-height */
+    overflow-x: hidden; /* Keeps horizontal clean */
+    overflow-y: auto !important; /* Forces vertical scroll back on */
+}
+
+body {
+    background-color: #1a1a1d; /* Slightly lighter than pure black */
+    background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                      linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 3px 100%;
+}
+
+header {
+    width: 100vw !important; /* Force it to the Viewport Width */
+    margin: 0 !important;
+    padding: 15px 40px;
+    background: #000 !important;
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.8);
+    position: fixed; /* Keeps it locked at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000000 !important;
+    box-sizing: border-box; /* Includes padding in the 100% calculation */
+}
+
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #fff;
+    text-shadow: 0 0 12px var(--accent);
+    margin: 0;
+    flex-shrink: 0; /* Prevents logo from getting squished */
+}
+
+/* --- SEARCH MODULE --- */
+.search-container {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Glow effect when you are typing */
+.search-container:focus-within {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 15px rgba(255, 203, 5, 0.2);
+}
+
+#pokeInput {
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    width: 250px; /* Gives you more space to type */
+}
+
+/* --- HEADER BUTTONS --- */
+#searchBtn, #randomBtn, #pokedexBtn {
+    margin: 0 !important;
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#searchBtn:hover, #randomBtn:hover, #pokedexBtn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+}
+
+
+.analysis-view {
+    grid-area: main;
+    padding: 40px;
+    /* Remove any 'height: 100%' here */
+    min-height: 100vh; 
+    background: radial-gradient(circle at 50% 30%, var(--type-glow), transparent 70%);
+}
+
+.poke-card-main {
+    
+    max-width: 1100px; /* Wider for the dashboard look */
+    margin: 20px auto;
+    background: rgba(15, 15, 18, 0.9);
+    border: 2px solid var(--type-glow);
+    border-radius: 20px;
+    padding: 40px;
+    
+    /* THE FIX: Re-enable the split but make it smart */
+    display: flex;
+    justify-content: center; /* Changed from flex-start to center */
+    align-items: flex-start;
+    gap: 50px; /* Controlled gap */
+    width: 100%;
+    
+    height: auto;
+    min-height: 600px;
+
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 
+                inset 0 0 15px var(--type-glow); /* Inner glow! */
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.visuals-and-stats {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr; /* Sprite on left, Stats on right */
+    gap: 30px;
+    align-items: start;
+}
+
+.visuals {
+    flex: 0 0 350px; /* This keeps the left side from shrinking */
+}
+
+.data-panel {
+    flex: 1; /* This forces the right side to grow and fill the void */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#pokeName { 
+    font-size: 2.8rem; 
+    font-weight: 900; 
+    letter-spacing: -1px;
+    background: linear-gradient(to bottom, #fff, #888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#pokeImg { 
+    width: 100%; 
+    max-width: 300px;
+    margin: 0 auto;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#pokeImg:hover { transform: scale(1.05) translateY(-10px); }
+
+.img-container {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.button-group {
+    margin-left: 50px;
+}
+
+.type-badge {
+    padding: 5px 15px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-right: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.data-panel { display: flex; flex-direction: column; gap: 20px; }
+
+.analysis-section, #weaknessResults, #evolutionChain, .moves-grid {
+    width: 100%;
+    display: block;
+    clear: both;
+}
+
+.lore-box {
+    border-left: 4px solid var(--type-glow); /* The accent line */
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px 20px;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 20px;
+}
+
+.lore-box h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--type-glow);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+#pokeLore {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Share Button */
+#shareBtn {
+    background: rgba(255, 203, 5, 0.8);
+    color: #111;
+    border: 1px solid var(--accent);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#shareBtn:hover {
+    background: var(--accent);
+    transform: scale(1.05);
+}
+
+/* Close Button */
+#closeBtn {
+    background: rgba(255, 68, 68, 0.8);
+    color: white;
+    border: 1px solid #ff4444;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#closeBtn:hover {
+    background: #ff4444;
+    transform: scale(1.05);
+}
+
+/* Add to Team Button */
+#addToTeamBtn {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#addToTeamBtn:hover {
+    background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+.shiny-toggle-container {
+    margin-top: 25px;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 30px;
+    width: fit-content;
+}
+
+/* Stats Styling */
+.stats-container {
+    margin-top: 15px;
+}
+
+.stat-row {
+    display: grid;
+    grid-template-columns: 85px 1fr 45px; /* Fixed width for labels and numbers */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.stat-label {
+    font-size: 0.6rem;
+    color: #888;
+    text-align: left;
+}
+
+.stats-bars {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.stat-bar-bg {
+    flex-grow: 1; 
+    width: 100%; 
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background: var(--type-glow); /* This makes the bar match the Pokemon's type! */
+    width: 0%; /* JS will animate this */
+    transition: width 1s ease-out;
+    box-shadow: 0 0 10px var(--type-glow);
+}
+
+.stat-value {
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    font-size: 0.8rem;
+    text-align: right;
+    color: var(--type-glow);
+}
+
+/* --- Enhanced Share Button --- */
+#shareBtn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--type-glow) !important; /* Glows with the Pokemon's type */
+    font-size: 0.65rem !important;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 6px 14px !important;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+}
+
+#shareBtn:hover {
+    background: var(--type-glow) !important;
+    color: #111 !important;
+    box-shadow: 0 0 15px var(--type-glow);
+    transform: translateY(-2px);
+}
+
+/* --- Professional Shiny Switch --- */
+.shiny-toggle-container {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.shiny-toggle-container span {
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+/* Custom Switch Logic */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 22px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px; width: 16px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(22px); }
+
+.evo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+.evo-step {
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.evo-step:hover {
+    transform: translateY(-5px);
+}
+
+.evo-step img {
+    width: 60px;
+    filter: drop-shadow(0 0 5px var(--type-glow));
+}
+
+.evo-step p {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #888;
+}
+
+.evo-arrow {
+    color: var(--type-glow);
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+#evolutionChain {
+    grid-column: 1 / span 2; 
+    margin-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 20px;
+}
+.evo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly; /* Better spacing for 3-stage lines */
+    gap: 20px;
+    padding: 25px !important; /* More breathing room */
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.evo-step img {
+    width: 100px !important; /* Increased from 60px */
+    height: 100px !important;
+    filter: drop-shadow(0 0 8px var(--type-glow));
+    transition: transform 0.3s ease;
+}
+
+.evo-step:hover img {
+    transform: scale(1.2); /* Zoom in when hovering */
+}
+
+.evo-step p {
+    font-size: 0.75rem !important; /* Bigger text */
+    margin-top: 10px;
+    color: #fff !important;
+    letter-spacing: 1px;
+}
+
+.evo-arrow {
+    font-size: 1.5rem; /* Larger arrows */
+    color: var(--type-glow);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.3; }
+}
+
+.moves-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.move-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.move-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--type-glow);
+}
+
+.move-name {
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.move-type-tag {
+    font-size: 0.55rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--type-glow);
+    color: #000;
+    font-weight: 900;
+}
+
+#pokeImg {
+    filter: drop-shadow(0 0 30px var(--type-glow));
+    transition: 0.5s ease-in-out;
+}
+
+/* --- 1. THE LAYOUT ENGINE --- */
+.container {
+    display: flex !important;
+    width: 100vw;
+    margin-top: 80px; /* Space for header */
+    min-height: calc(100vh - 80px);
+    align-items: flex-start;
+    background: #0d0d0f; /* Dark lab background */
+}
+/* --- 2. THE MAIN DISPLAY UNIT --- */
+.pokemon-card {
+    flex: 1;
+    margin: 20px;
+    background: rgba(15, 15, 18, 0.95);
+    border: 2px solid var(--type-glow);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    justify-content: flex-start;
+    height: auto;
+    min-height: 80vh; /* Ensures it stays tall even with less data */
+    overflow-y: auto;
+    max-height: calc(100vh - 120px);
+}
+
+#displayArea {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.poke-card-main {
+    margin: 15px auto 30px auto;
+    width: 100%;
+    max-width: 1120px;
+}
+
+/* --- THE SIDEBAR (Right Side) --- */
+.team-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    background: #0a0a0c;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px; /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+/* Responsive Design for Pokemon Card */
+@media (max-width: 1024px) {
+    .poke-card-main {
+        flex-direction: column;
+        gap: 30px;
+        padding: 20px;
+    }
+    .visuals {
+        flex: none;
+        width: 100%;
+    }
+    .data-panel {
+        flex: none;
+    }
+    #pokeName {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        margin-top: 70px;
+    }
+    .pokemon-card {
+        margin: 10px;
+        padding: 20px;
+        gap: 20px;
+    }
+    .team-sidebar {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 20px;
+    }
+    .poke-card-main {
+        padding: 15px;
+        gap: 20px;
+    }
+    #pokeName {
+        font-size: 1.8rem;
+    }
+    #pokeImg {
+        max-width: 250px;
+    }
+    .evo-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .evo-step img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px 20px;
+    }
+    .logo {
+        font-size: 1.2rem;
+    }
+    #pokeInput {
+        width: 200px;
+    }
+    .poke-card-main {
+        padding: 10px;
+        min-height: 400px;
+    }
+    #pokeName {
+        font-size: 1.5rem;
+    }
+    #pokeImg {
+        max-width: 200px;
+    }
+    .button-group {
+        margin-left: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .shiny-toggle-container {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    .moves-grid {
+        grid-template-columns: 1fr;
+    }
+}

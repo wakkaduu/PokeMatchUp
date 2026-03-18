@@ -3,69 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png">
     <title>PokéMatchup Lab</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://freepngimg.com/download/icon/search/7466-pokemon.png">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pokemon.css">
+    <link rel="stylesheet" href="css/team.css">
 </head>
 <body>
-    <div class="container">
-        <h1>PokéMatchup Lab</h1>
-        
-        <div class="search-box">
-            <input type="text" id="pokeInput" placeholder="Enter Pokémon...">
-            <div class="button-group">
-                <button id="searchBtn">Analyze</button>
-                <button id="randomBtn">Random</button>
-                <button id="clearBtn">Clear</button>
-            </div>
-        </div>
 
-        <div id="loading" class="hidden">
-            <div class="spinner"></div>
-            <p>Searching the Pokédex...</p>
-        </div>
-
-        <div id="displayArea" class="hidden">
-            <div class="poke-header">
-                <h2 id="pokeName"></h2>
-                <button id="shareBtn" class="icon-btn" title="Share this Pokémon">🔗</button>
-            </div>
-
-            <div id="typesBadge"></div>
-            
-            <div class="controls-row">
-                <div class="shiny-toggle-container">
-                    <span>Normal</span>
-                    <label class="switch">
-                        <input type="checkbox" id="shinyToggle">
-                        <span class="slider round"></span>
-                    </label>
-                    <span>Shiny ✨</span>
+    <div id="homePage">
+        <div class="home-content">
+            <h1 class="home-title animate-fade-in">POKÉMATCHUP LAB</h1>
+            <p class="home-subtitle animate-fade-in-delay">Analyze, Compare, and Build Your Ultimate Pokemon Team</p>
+            <button id="enterBtn" class="home-enter-btn animate-fade-in-delay-2">ENTER THE LAB</button>
+            <div class="home-features animate-fade-in-delay-3">
+                <div class="feature">
+                    <h3>🔍 Analyze</h3>
+                    <p>Search and dissect Pokemon stats, types, and evolutions.</p>
+                </div>
+                <div class="feature">
+                    <h3>⚔️ Compare</h3>
+                    <p>Battle two Pokemon in the arena for stat showdowns.</p>
+                </div>
+                <div class="feature">
+                    <h3>👥 Team Up</h3>
+                    <p>Save and manage your team with coverage analysis.</p>
                 </div>
             </div>
-
-            <div class="img-container">
-                <img id="pokeImg" src="" alt="pokemon">
-            </div>
-            
-            <div class="analysis-section">
-                <h3>Weakness Analysis</h3>
-                <div id="weaknessResults"></div>
-            </div>
         </div>
+    </div>
 
-        <div id="teamSection">
+    <div id="mainApp" style="display: none;">
+
+    <header>
+        <h1 class="logo" onclick="goHome()">POKÉMATCHUP LAB</h1>
+        <div class="search-container">
+            <input type="text" id="pokeInput" placeholder="ENTER NAME OR ID...">
+            <button id="searchBtn">Analyze</button>
+            <button id="randomBtn">Random</button>
+        </div>
+        <button id="pokedexBtn">POKEDEX</button>
+    </header>
+
+    <div class="container">
+        <main class="pokemon-card">
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p>Searching Database...</p>
+            </div>
+
+            <div id="displayArea">
+                <div class="poke-card-main">
+                    <div class="visuals">
+                        <div class="name-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <h2 id="pokeName">---</h2>
+                            <div style="display: flex; gap: 10px;" class="button-group">
+                                <button id="shareBtn">SHARE</button>
+                                <button id="closeBtn">CLOSE</button>
+                            </div>
+                        </div>
+                        <div id="typesBadge"></div>
+                        <div class="img-container">
+                            <img id="pokeImg" src="" alt="">
+                        </div>
+                        <div class="shiny-toggle-container">
+                            <span>Normal</span>
+                            <label class="switch">
+                                <input type="checkbox" id="shinyToggle">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Shiny ✨</span>
+                        </div>
+                    </div>
+
+                    <div class="data-panel">
+                        <div class="analysis-section lore-box">
+                            <h3>Subject Description</h3>
+                            <p id="pokeLore">Please initiate a scan...</p>
+                        </div>
+                        
+                        <div id="statsContainer" class="analysis-section">
+                            <h3>Base Stats</h3>
+                            <div class="stats-bars"></div>
+                        </div>
+
+                        <div id="weaknessResults"></div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <aside class="team-sidebar">
             <h3>My Saved Team</h3>
-            <div id="coverageWarning"></div>
             <div id="teamGrid"></div>
-            <button id="clearTeamBtn">Release All</button>
-        </div>
-    </div> <footer class="fixed-footer">
-        <p>Created by <strong>[Your Name]</strong></p>
-        <p>CpE Student | Quezon City University</p>
-    </footer>
+            <div id="teamCoverage" class="team-analysis-box"></div>
+            <button id="clearTeamBtn">Release All Pokemon</button>
+            <button id="compareBtn">COMPARE SELECTED</button>
+            <button id="shareTeamBtn">SHARE TEAM</button>
+        </aside>
+    </div>
 
-    <script src="script.js"></script>
+    <div id="compareModal" class="modal hidden">
+        <div class="arena-modal-content">
+            <span class="close-modal" onclick="closeCompare()">&times;</span>
+            <div class="vs-header">
+                <h2>VERSUS MODE</h2>
+            </div>
+            <div class="vs-container"></div> 
+        </div>
+    </div>
+
+    <div id="pokedexModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>POKEDEX</h2>
+                <span class="close-modal" onclick="closePokedex()">&times;</span>
+            </div>
+            <div class="pokedex-search">
+                <input type="text" id="pokedexSearch" placeholder="Search Pokemon...">
+            </div>
+            <div id="pokedexContainer"></div>
+        </div>
+    </div>
+
+    <div id="shareModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>SHARE YOUR TEAM</h2>
+                <span class="close-modal" onclick="closeShareModal()">&times;</span>
+            </div>
+            <div class="share-content">
+                <p>Copy this link to share your team with others:</p>
+                <div class="share-url-container">
+                    <input type="text" id="shareUrlInput" readonly>
+                    <button id="copyShareBtn" class="mini-btn">COPY</button>
+                </div>
+                <p class="share-note">Anyone with this link can view and import your team!</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/team.js"></script>
 </body>
 </html>
